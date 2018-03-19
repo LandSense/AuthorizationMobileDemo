@@ -142,7 +142,9 @@ namespace LandSenseAuth.ViewModels
                 Constant.Scope,
                 new Uri(Constant.AuthorizeUrl),
                 new Uri(Constant.AndroidRedirectUrl),
-                new Uri(Constant.AccessTokenUrl));
+                new Uri(Constant.AccessTokenUrl),
+                getUsernameAsyncFunc,
+                true);
 
             authenticator.AccessTokenUrl = new Uri(Constant.AccessTokenUrl);
             authenticator.Completed += this.OnAuthCompleted;
