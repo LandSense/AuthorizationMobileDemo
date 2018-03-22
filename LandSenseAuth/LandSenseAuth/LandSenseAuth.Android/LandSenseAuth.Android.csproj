@@ -12,7 +12,7 @@
     <RootNamespace>LandSenseAuth.Droid</RootNamespace>
     <AssemblyName>LandSenseAuth.Android</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkVersion>v8.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
@@ -105,10 +105,10 @@
       <Version>26.1.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Auth">
-      <Version>1.6.0</Version>
+      <Version>1.6.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Auth.XamarinForms">
-      <Version>1.6.0</Version>
+      <Version>1.6.0.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="2.5.0.280555" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="26.1.0.1" />

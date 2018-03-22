@@ -25,9 +25,9 @@ namespace LandSenseAuth.Constants
         public const string AndroidClientId = "a6136f07-a8dc-8bce-725a-7a07489f7d0b@as.landsense.eu";
 
         /// <summary>
-        ///     The android redirect URL
+        ///     The android redirect URL, make sure it is lower case and has a trailing slash
         /// </summary>
-        public const string AndroidRedirectUrl = "eu.landsense://LandSenseAuth/";
+        public const string AndroidRedirectUrl = "eu.landsense://landsenseauth/";
 
         /// <summary>
         ///     The authorize URL

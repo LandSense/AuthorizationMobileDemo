@@ -56,7 +56,7 @@ namespace LandSenseAuth.ViewModels
         /// <summary>
         ///     The authentication information
         /// </summary>
-        private AuthInfo authInfo;
+        private AuthInfo authInfo = new AuthInfo();
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="MainPageViewModel" /> class.
@@ -130,11 +130,6 @@ namespace LandSenseAuth.ViewModels
                     break;
             }
 
-            Func<Dictionary<string, string>, string> super = (prop) => "Test";
-
-            GetUsernameAsyncFunc getUsernameAsyncFunc = (prop) => { return Task.Run(() => string.Empty); };
-
-
             // TODO : add Native UI = true.
             var authenticator = new OAuth2AuthenticatorWithGrant(
                 clientId,
@@ -143,10 +138,8 @@ namespace LandSenseAuth.ViewModels
                 new Uri(Constant.AuthorizeUrl),
                 new Uri(Constant.AndroidRedirectUrl),
                 new Uri(Constant.AccessTokenUrl),
-                getUsernameAsyncFunc,
-                true);
+                isUsingNativeUI: true);
 
-            authenticator.AccessTokenUrl = new Uri(Constant.AccessTokenUrl);
             authenticator.Completed += this.OnAuthCompleted;
             authenticator.Error += this.OnAuthError;
 
@@ -175,14 +168,17 @@ namespace LandSenseAuth.ViewModels
                 var expiresIn = int.Parse(eventArgs.Account.Properties["expires_in"]);
                 var tokenType = eventArgs.Account.Properties["token_type"];
                 var scope = eventArgs.Account.Properties["scope"];
-                authInfoObj = new AuthInfo
+				var idToken = eventArgs.Account.Properties["id_token"];
+				authInfoObj = new AuthInfo
                                   {
                                       IsAuthenticated = eventArgs.IsAuthenticated,
                                       AccessToken = accessToken,
                                       ExpiresIn = expiresIn,
                                       Scope = scope,
-                                      TokenType = tokenType
+                                      TokenType = tokenType,
                                   };
+
+				// TODO: Extract user info from id_token (jwt parsing)
             }
             else
             {
@@ -208,17 +204,19 @@ namespace LandSenseAuth.ViewModels
             {
                 this.FillAuthCustomObject(e, ref this.authInfo);
 
-                if (this.authInfo != null)
-                {
-                    var userInfo = await this.GetUserDataAsync(Constant.UserInfoUrl, this.authInfo.AccessToken);
-                    await this.navigationService.NavigateAsync(
-                        "ProfilePage",
-                        new NavigationParameters { { "userInfo", userInfo } });
-                }
+				// TODO: Modify this section to make use of the user info from the id_token
+				// The user info endpoint may not be used by any app
+                ////if (this.authInfo != null)
+                ////{
+                ////    var userInfo = await this.GetUserDataAsync(Constant.UserInfoUrl, this.authInfo.AccessToken);
+                ////    await this.navigationService.NavigateAsync(
+                ////        "ProfilePage",
+                ////        new NavigationParameters { { "userInfo", userInfo } });
+                ////}
 
-                if (this.account != null) this.store.Delete(this.account, Constant.AppName);
+                ////if (this.account != null) this.store.Delete(this.account, Constant.AppName);
 
-                await this.store.SaveAsync(this.account = e.Account, Constant.AppName);
+                ////await this.store.SaveAsync(this.account = e.Account, Constant.AppName);
             }
         }
 
@@ -235,6 +233,8 @@ namespace LandSenseAuth.ViewModels
                 authenticator.Completed -= this.OnAuthCompleted;
                 authenticator.Error -= this.OnAuthError;
             }
+
+			// TODO: Inform the user about the error
         }
     }
 }
